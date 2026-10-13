@@ -1,7 +1,7 @@
 // player.js - Renderização e Animação do John para a Nova Folha de Sprites
 
 const playerImg = new Image();
-playerImg.src = "Imagens/johnPersonagem.png"; // Certifique-se de que o nome do arquivo na pasta é este
+playerImg.src = "imagens/JohnPersonagem1.png";
 
 let playerSpriteData = {
     loaded: false,
