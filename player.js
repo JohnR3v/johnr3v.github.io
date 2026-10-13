@@ -1,4 +1,4 @@
-// player.js - Mapeamento Ajustado para a Matriz 6x6 do John
+// player.js - Mapeamento Ajustado para a Matriz 5x6 do John
 
 const playerImg = new Image();
 playerImg.src = "imagens/JohnPersonagem1.png";
@@ -7,18 +7,18 @@ let playerSpriteData = {
     loaded: false,
     frameWidth: 0,
     frameHeight: 0,
-    cols: 6, // 6 colunas
-    rows: 6  // 6 linhas
+    cols: 5, // 5 colunas horizontais na imagem
+    rows: 6  // 6 linhas verticais na imagem
 };
 
 playerImg.onload = () => {
     playerSpriteData.loaded = true;
     playerSpriteData.frameWidth = playerImg.width / playerSpriteData.cols;
     playerSpriteData.frameHeight = playerImg.height / playerSpriteData.rows;
-    console.log(`Sprite carregado! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
+    console.log(`Sprite 5x6 carregado com sucesso! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
 };
 
-// Fallback visual caso demore
+// Fallback visual caso demore um instante
 function drawPlayerFallback(ctx, player) {
     ctx.fillStyle = "#ffb703";
     ctx.beginPath(); ctx.arc(player.x, player.y - 16, 8, 0, Math.PI * 2); ctx.fill();
@@ -36,13 +36,13 @@ function drawPlayer(ctx, player) {
     let row = 0;
     let flip = false;
 
-    // Animação de passos alternando entre os 6 quadros da linha
+    // Animação de passos alternando entre os quadros da linha (máximo de 5 colunas)
     let animFrame = 0;
     if (player.isMoving) {
-        animFrame = Math.floor(Date.now() / 120) % 6; 
+        animFrame = Math.floor(Date.now() / 130) % 5; 
     }
 
-    // Mapeamento das linhas da matriz 6x6:
+    // Mapeamento correto das linhas para cada direção:
     switch (player.dir) {
         case 'down':  
             row = 0; // 1ª linha (Frente)
