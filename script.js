@@ -126,20 +126,30 @@ function update() {
     player.x += dx;
     player.y += dy;
 
-    // Limites de Movimentação no Mundo
+// Limites de Movimentação no Mundo
     if (currentScene === 'outdoor') {
         player.x = Math.max(40, Math.min(worldWidth - 40, player.x));
         player.y = Math.max(40, Math.min(worldHeight - 40, player.y));
 
-        // Checar entrada na casa "Desafios" (Posicionada em X: 900-1180, Y: 450-650)
-        if (player.x > 710 && player.x < 790 && player.y > 520 && player.y < 600) {
+        // --- COLISÃO DA PORTA (Sincronizada exatamente com a posição visual) ---
+        let houseX = 688; // Confirma se o teu houseX é 688 como está no editor
+        let houseY = 450; // Confirma se o teu houseY é 450
+        
+        let doorX = houseX + 70;
+        let doorY = houseY + 96;
+        let doorWidth = 55;
+        let doorHeight = 65;
+
+        // Verifica se o jogador está em cima da área da porta
+        if (player.x > doorX && player.x < doorX + doorWidth && 
+            player.y > doorY && player.y < doorY + doorHeight) {
             currentScene = 'indoor_desafios';
-            player.x = 420; // Posição interna da porta
-            player.y = 510;
+            player.x = 400; // Posição interna da porta
+            player.y = 500;
             document.getElementById("location-text").innerText = "Local: Casa - Desafios";
             document.getElementById("objective-text").innerText = "Objetivo: Acesse os terminais de hacking";
         }
-    } 
+    }
     else if (currentScene === 'indoor_desafios') {
         player.x = Math.max(80, Math.min(canvas.width - 100, player.x));
         player.y = Math.max(120, Math.min(canvas.height - 60, player.y));
