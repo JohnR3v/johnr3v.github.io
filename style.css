@@ -6,21 +6,25 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .game-container {
     position: relative;
-    width: 800px;
-    height: 600px;
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 4 / 3; /* Mantém a proporção correta no celular */
     background: #111;
     border: 2px solid #00ffcc;
     box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
     border-radius: 8px;
+    overflow: hidden;
 }
 
 canvas {
+    width: 100%;
+    height: 100%;
     display: block;
     background: #122412;
 }
@@ -105,15 +109,23 @@ canvas {
 }
 
 /* Controles Mobile */
+/* Controles Mobile - Ocultos por padrão no PC */
 #mobile-controls {
     position: absolute;
     bottom: 15px;
     width: 100%;
-    display: flex;
+    display: none; /* Esconde no PC */
     justify-content: space-between;
     padding: 0 20px;
     box-sizing: border-box;
     pointer-events: none;
+}
+
+/* Mostra os controles na tela apenas se for um dispositivo com toque (celular/tablet) ou tela estreita */
+@media (pointer: coarse), (max-width: 768px) {
+    #mobile-controls {
+        display: flex; /* Exibe apenas no celular */
+    }
 }
 
 .dpad {
