@@ -10,7 +10,7 @@ const worldHeight = 1200;
 // Estado do Jogador (John) - Começa no centro do mundo
 let player = {
     x: 750,
-    y: 650,
+    y: 680,
     speed: 4,
     dir: 'down',
     isMoving: false
