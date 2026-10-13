@@ -1,3 +1,5 @@
+// script.js - Corrigido e Limpo (Sem conflitos de touchInput)
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -9,7 +11,6 @@ const worldHeight = 1200;
 let player = {
     x: 800,
     y: 600,
-    size: 24,
     speed: 4,
     dir: 'down',
     isMoving: false
@@ -27,14 +28,29 @@ let camera = {
 let currentScene = 'outdoor';
 
 let keys = {};
-let touchInput = { up: false, down: false, left: false, right: false, action: false };
 
-// Carregamento das Imagens de Cenário
+// --- Carregamento Robusto de Imagens ---
+let imagesLoaded = 0;
+const totalImages = 2;
+
+function imageLoaded() {
+    imagesLoaded++;
+    if (imagesLoaded === totalImages) {
+        console.log("Cenários carregados com sucesso. Iniciando loop do jogo...");
+        requestAnimationFrame(gameLoop);
+    }
+}
+
 const bgImage = new Image();
 bgImage.src = "imagens/chaosite.jpeg";
+bgImage.onload = imageLoaded;
+bgImage.onerror = () => console.error("Erro ao carregar imagens/chaosite.jpeg");
 
 const houseImage = new Image();
 houseImage.src = "imagens/casahacker.jpeg";
+houseImage.onload = imageLoaded;
+houseImage.onerror = () => console.error("Erro ao carregar imagens/casahacker.jpeg");
+// -------------------------------------
 
 // Desafios Hacker
 const challenges = [
@@ -81,31 +97,31 @@ window.addEventListener("keyup", (e) => {
     keys[e.key.toLowerCase()] = false;
 });
 
-// Ouvintes Touch (Mobile D-Pad)
+// Ouvintes Touch (Mobile D-Pad unificados)
 function setupTouchButton(id, keyName) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    btn.addEventListener("touchstart", (e) => { e.preventDefault(); touchInput[keyName] = true; if(keyName === 'action') checkInteraction(); }, {passive: false});
-    btn.addEventListener("touchend", (e) => { e.preventDefault(); touchInput[keyName] = false; }, {passive: false});
-    btn.addEventListener("mousedown", () => { touchInput[keyName] = true; if(keyName === 'action') checkInteraction(); });
-    btn.addEventListener("mouseup", () => { touchInput[keyName] = false; });
+    btn.addEventListener("touchstart", (e) => { e.preventDefault(); keys[keyName] = true; if(keyName === 'e') checkInteraction(); }, {passive: false});
+    btn.addEventListener("touchend", (e) => { e.preventDefault(); keys[keyName] = false; }, {passive: false});
+    btn.addEventListener("mousedown", () => { keys[keyName] = true; if(keyName === 'e') checkInteraction(); });
+    btn.addEventListener("mouseup", () => { keys[keyName] = false; });
 }
 
-setupTouchButton("btn-up", "up");
-setupTouchButton("btn-down", "down");
-setupTouchButton("btn-left", "left");
-setupTouchButton("btn-right", "right");
-setupTouchButton("btn-action", "action");
+setupTouchButton("btn-up", "w");
+setupTouchButton("btn-down", "s");
+setupTouchButton("btn-left", "a");
+setupTouchButton("btn-right", "d");
+setupTouchButton("btn-action", "e");
 
 function update() {
     let dx = 0;
     let dy = 0;
     player.isMoving = false;
 
-    if (keys["arrowup"] || keys["w"] || touchInput.up) { dy = -player.speed; player.dir = 'up'; player.isMoving = true; }
-    if (keys["arrowdown"] || keys["s"] || touchInput.down) { dy = player.speed; player.dir = 'down'; player.isMoving = true; }
-    if (keys["arrowleft"] || keys["a"] || touchInput.left) { dx = -player.speed; player.dir = 'left'; player.isMoving = true; }
-    if (keys["arrowright"] || keys["d"] || touchInput.right) { dx = player.speed; player.dir = 'right'; player.isMoving = true; }
+    if (keys["arrowup"] || keys["w"]) { dy = -player.speed; player.dir = 'up'; player.isMoving = true; }
+    if (keys["arrowdown"] || keys["s"]) { dy = player.speed; player.dir = 'down'; player.isMoving = true; }
+    if (keys["arrowleft"] || keys["a"]) { dx = -player.speed; player.dir = 'left'; player.isMoving = true; }
+    if (keys["arrowright"] || keys["d"]) { dx = player.speed; player.dir = 'right'; player.isMoving = true; }
 
     player.x += dx;
     player.y += dy;
@@ -115,8 +131,8 @@ function update() {
         player.x = Math.max(40, Math.min(worldWidth - 40, player.x));
         player.y = Math.max(40, Math.min(worldHeight - 40, player.y));
 
-        // Checar entrada na casa "Desafios" (Posicionada em X: 900-1050, Y: 500-600)
-        if (player.x > 900 && player.x < 1050 && player.y > 500 && player.y < 600) {
+        // Checar entrada na casa "Desafios" (Posicionada em X: 900-1180, Y: 450-650)
+        if (player.x > 950 && player.x < 1030 && player.y > 550 && player.y < 620) {
             currentScene = 'indoor_desafios';
             player.x = 400; // Posição interna da porta
             player.y = 500;
@@ -131,8 +147,8 @@ function update() {
         // Checar saída na porta inferior
         if (player.x > 360 && player.x < 440 && player.y >= 530) {
             currentScene = 'outdoor';
-            player.x = 970; // Retorna na frente da casa externa
-            player.y = 620;
+            player.x = 990; // Retorna na frente da casa externa
+            player.y = 640;
             document.getElementById("location-text").innerText = "Local: Campo Externo";
             document.getElementById("objective-text").innerText = "Objetivo: Explore o mapa e encontre a Casa de Desafios";
         }
@@ -205,7 +221,7 @@ function closeChallenge() {
     activeChallengeIndex = null;
 }
 
-// Renderização Gráfica com Suporte à Câmera
+// Renderização Gráfica Completa
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -226,7 +242,7 @@ function render() {
 }
 
 function renderOutdoor() {
-    // Desenha a imagem de fundo do mundo inteiro (chaosite.jpeg)
+    // 1. Desenha o Fundo Tecnológico (chaosite.jpeg) cobrindo todo o mundo
     if (bgImage.complete) {
         ctx.drawImage(bgImage, 0, 0, worldWidth, worldHeight);
     } else {
@@ -234,7 +250,7 @@ function renderOutdoor() {
         ctx.fillRect(0, 0, worldWidth, worldHeight);
     }
 
-    // Desenha a imagem da Casa de Desafios (casahacker.jpeg) no lugar do retângulo antigo
+    // 2. Desenha a Casa de Desafios (casahacker.jpeg) na posição correta
     if (houseImage.complete) {
         ctx.drawImage(houseImage, 900, 450, 280, 200);
     }
@@ -298,5 +314,3 @@ function gameLoop() {
     render();
     requestAnimationFrame(gameLoop);
 }
-
-gameLoop();
