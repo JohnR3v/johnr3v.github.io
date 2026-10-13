@@ -132,7 +132,7 @@ function update() {
         player.y = Math.max(40, Math.min(worldHeight - 40, player.y));
 
         // Checar entrada na casa "Desafios" (Posicionada em X: 900-1180, Y: 450-650)
-        if (player.x > 930 && player.x < 1010 && player.y > 520 && player.y < 600) {
+        if (player.x > 710 && player.x < 790 && player.y > 520 && player.y < 600) {
             currentScene = 'indoor_desafios';
             player.x = 400; // Posição interna da porta
             player.y = 500;
@@ -250,7 +250,7 @@ function renderOutdoor() {
         ctx.fillRect(0, 0, worldWidth, worldHeight);
     }
     // 2. Desenha a Casa de Desafios
-    let houseX = 900;
+    let houseX = 680;
     let houseY = 450;
     let houseWidth = 280;
     let houseHeight = 200;
@@ -259,7 +259,7 @@ function renderOutdoor() {
         ctx.drawImage(houseImage, houseX, houseY, houseWidth, houseHeight);
     }
 
-    let doorX = 945;
+    let doorX = houseX + 45; // Porta centralizada na casa
     let doorY = 530;
     let doorWidth = 55;
     let doorHeight = 65;
