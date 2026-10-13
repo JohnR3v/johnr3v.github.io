@@ -1,7 +1,7 @@
 // player.js - Gerenciamento e Animação Limpa do John
 
 const playerImg = new Image();
-playerImg.src = "Imagens/JohnPersonagem1.png"; // Certifique-se de usar a imagem LIMPA
+playerImg.src = "imagens/JohnPersonagem1.png"; // Certifique-se de usar a imagem LIMPA
 
 let playerSpriteData = {
     loaded: false,
