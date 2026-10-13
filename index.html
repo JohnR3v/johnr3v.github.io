@@ -2,109 +2,260 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>johnr3v.dev | Cybersecurity & Tech Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2D Grass Exploration Game - johnr3v.dev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --accent-color: #00ff66;
-            --text-color: #f3f4f6;
-            --text-muted: #9ca3af;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: 'Fira Code', monospace;
+            background-color: #0d1117;
+            color: #3fb950;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .container {
-            max-width: 800px;
-            width: 90%;
-            background: var(--card-bg);
-            border: 1px solid #1f2937;
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.05);
+
+        /* Responsive Canvas Styling */
+        canvas {
+            image-rendering: pixelated;
+            touch-action: none;
+            background-color: #2e7d32;
         }
-        header h1 {
-            color: var(--accent-color);
-            font-size: 2rem;
-            margin-bottom: 5px;
+
+        /* Custom Touch D-Pad Controls */
+        .dpad-btn {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            color: #3fb950;
+            backdrop-filter: blur(4px);
+            -webkit-tap-highlight-color: transparent;
         }
-        header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin-top: 0;
-        }
-        .section {
-            margin-top: 30px;
-        }
-        .section h2 {
-            font-size: 1.2rem;
-            border-bottom: 1px solid #374151;
-            padding-bottom: 8px;
-            color: #60a5fa;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            margin: 10px 0;
-        }
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        a:hover {
-            text-decoration: underline;
-            color: #34d399;
-        }
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+
+        .dpad-btn:active {
+            background: rgba(16, 185, 129, 0.6);
+            transform: scale(0.95);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>&gt; johnr3v.dev_</h1>
-            <p>Cybersecurity Analyst | System Analysis & Development Student</p>
-        </header>
+<body class="min-h-screen flex flex-col justify-between items-center p-2 sm:p-4 bg-slate-950 text-slate-100">
 
-        <div class="section">
-            <h2>// Sobre Mim</h2>
-            <p>Focado em segurança defensiva, análise de vulnerabilidades (OWASP Top 10), automação com Python e compartilhamento de conhecimento técnico através de projetos e conteúdo digital.</p>
+    <header class="w-full max-w-2xl flex flex-wrap justify-between items-center bg-slate-900/90 border border-emerald-500/30 p-3 rounded-xl mb-2 gap-2 shadow-lg">
+        <div>
+            <h1 class="text-base sm:text-lg font-bold text-emerald-400 tracking-wide">&gt; johnr3v.dev // MINI_GAME</h1>
+            <p class="text-xs text-slate-400">Grama 2D &amp; Suporte Touch / Teclado</p>
+        </div>
+        <div class="flex gap-3 text-xs sm:text-sm">
+            <div class="bg-black/50 px-3 py-1 rounded border border-emerald-500/30">
+                POS: <span id="pos-display" class="text-emerald-400 font-bold">X: 0, Y: 0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-2xl flex flex-col items-center relative my-auto">
+        <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border-2 border-emerald-500/40 shadow-2xl bg-emerald-950/20 flex items-center justify-center">
+            <canvas id="gameCanvas" class="w-full h-full block"></canvas>
         </div>
 
-        <div class="section">
-            <h2>// Projetos & Conteúdos</h2>
-            <ul>
-                <li>🛡️ <strong>Bad Guys da Cyber:</strong> Iniciativa de educação e conscientização em cibersegurança.</li>
-                <li>💻 <strong>GitHub Repositories:</strong> Códigos de automação, scripts de segurança e estudos de malware (MITRE ATT&CK).</li>
-            </ul>
+        <!-- Desktop Controls Legend -->
+        <div class="hidden sm:flex justify-between w-full text-xs text-slate-400 mt-2 px-1">
+            <span>💻 <b>Teclado:</b> Use <span class="text-emerald-400 font-semibold">WASD</span> ou <span class="text-emerald-400 font-semibold">Setas</span> para mover</span>
+            <span>📱 <b>Touch:</b> D-Pad ativo em telas pequenas</span>
         </div>
+    </main>
 
-        <div class="section">
-            <h2>// Links Oficiais</h2>
-            <ul>
-                <li>GitHub: <a href="https://github.com/johnr3v" target="_blank">github.com/johnr3v</a></li>
-            </ul>
+    <!-- Touch Screen D-Pad (Visible on Mobile / Touch Devices) -->
+    <div id="touch-controls" class="w-full max-w-xs mt-3 mb-2 flex flex-col items-center sm:hidden">
+        <div class="grid grid-cols-3 gap-2 w-48 h-48">
+            <div></div>
+            <button id="btn-up" class="dpad-btn rounded-t-xl flex items-center justify-center text-xl font-bold active:scale-90">▲</button>
+            <div></div>
+
+            <button id="btn-left" class="dpad-btn rounded-l-xl flex items-center justify-center text-xl font-bold active:scale-90">◄</button>
+            <div class="bg-emerald-950/40 border border-emerald-500/20 rounded-lg flex items-center justify-center text-xs text-emerald-500 font-mono">MOVE</div>
+            <button id="btn-right" class="dpad-btn rounded-r-xl flex items-center justify-center text-xl font-bold active:scale-90">►</button>
+
+            <div></div>
+            <button id="btn-down" class="dpad-btn rounded-b-xl flex items-center justify-center text-xl font-bold active:scale-90">▼</button>
+            <div></div>
         </div>
-
-        <footer>
-            <p>&copy; 2026 johnr3v.dev. All rights reserved.</p>
-        </footer>
     </div>
+
+    <script>
+        // Setup canvas context and viewport
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Internal rendering resolution
+        const GAME_WIDTH = 800;
+        const GAME_HEIGHT = 600;
+
+        canvas.width = GAME_WIDTH;
+        canvas.height = GAME_HEIGHT;
+
+        // Player properties
+        const player = {
+            x: GAME_WIDTH / 2,
+            y: GAME_HEIGHT / 2,
+            size: 24,
+            speed: 4,
+            color: '#10b981',
+            eyeColor: '#ffffff'
+        };
+
+        // Input state tracking
+        const input = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+        };
+
+        // Grass blades decorative data for the background map
+        const grassPatches = [];
+        function generateGrassMap() {
+            grassPatches.length = 0;
+            for (let i = 0; i < 120; i++) {
+                grassPatches.push({
+                    x: Math.random() * GAME_WIDTH,
+                    y: Math.random() * GAME_HEIGHT,
+                    size: Math.random() * 4 + 4,
+                    color: Math.random() > 0.5 ? '#246b27' : '#388e3c'
+                });
+            }
+        }
+        generateGrassMap();
+
+        // Keyboard Handlers
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (key === 'w' || key === 'arrowup') input.up = true;
+            if (key === 's' || key === 'arrowdown') input.down = true;
+            if (key === 'a' || key === 'arrowleft') input.left = true;
+            if (key === 'd' || key === 'arrowright') input.right = true;
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const key = e.key.toLowerCase();
+            if (key === 'w' || key === 'arrowup') input.up = false;
+            if (key === 's' || key === 'arrowdown') input.down = false;
+            if (key === 'a' || key === 'arrowleft') input.left = false;
+            if (key === 'd' || key === 'arrowright') input.right = false;
+        });
+
+        // Touch D-Pad Button Helper
+        function bindTouchBtn(elementId, direction) {
+            const btn = document.getElementById(elementId);
+            if (!btn) return;
+
+            const startAction = (e) => {
+                e.preventDefault();
+                input[direction] = true;
+            };
+
+            const endAction = (e) => {
+                e.preventDefault();
+                input[direction] = false;
+            };
+
+            btn.addEventListener('touchstart', startAction, { passive: false });
+            btn.addEventListener('touchend', endAction, { passive: false });
+            btn.addEventListener('touchcancel', endAction, { passive: false });
+
+            // Mouse fallback for desktop testing of D-Pad buttons
+            btn.addEventListener('mousedown', startAction);
+            btn.addEventListener('mouseup', endAction);
+            btn.addEventListener('mouseleave', endAction);
+        }
+
+        bindTouchBtn('btn-up', 'up');
+        bindTouchBtn('btn-down', 'down');
+        bindTouchBtn('btn-left', 'left');
+        bindTouchBtn('btn-right', 'right');
+
+        function update() {
+            let dx = 0;
+            let dy = 0;
+
+            if (input.up) dy -= player.speed;
+            if (input.down) dy += player.speed;
+            if (input.left) dx -= player.speed;
+            if (input.right) dx += player.speed;
+
+            // Normalize diagonal movement speed
+            if (dx !== 0 && dy !== 0) {
+                dx *= 0.7071;
+                dy *= 0.7071;
+            }
+
+            // Apply movement & border constraints
+            player.x = Math.max(player.size, Math.min(GAME_WIDTH - player.size, player.x + dx));
+            player.y = Math.max(player.size, Math.min(GAME_HEIGHT - player.size, player.y + dy));
+
+            // Update position counter display
+            document.getElementById('pos-display').innerText = `X: ${Math.round(player.x)}, Y: ${Math.round(player.y)}`;
+        }
+
+        function render() {
+            // Fill Grass Field Background
+            ctx.fillStyle = '#2d6a4f';
+            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            // Draw Grass Texture Patches
+            grassPatches.forEach(g => {
+                ctx.fillStyle = g.color;
+                ctx.beginPath();
+                ctx.arc(g.x, g.y, g.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw Map Border
+            ctx.strokeStyle = '#1b4332';
+            ctx.lineWidth = 12;
+            ctx.strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            // Draw Shadow beneath Player
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+            ctx.beginPath();
+            ctx.ellipse(player.x, player.y + player.size - 4, player.size * 0.9, player.size * 0.4, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw Player Character Body
+            ctx.fillStyle = player.color;
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#064e3b';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw Character Eyes/Visor facing direction
+            ctx.fillStyle = player.eyeColor;
+            let eyeOffsetX = 0;
+            let eyeOffsetY = 0;
+
+            if (input.left) eyeOffsetX = -6;
+            if (input.right) eyeOffsetX = 6;
+            if (input.up) eyeOffsetY = -6;
+            if (input.down) eyeOffsetY = 6;
+
+            ctx.beginPath();
+            ctx.arc(player.x - 5 + eyeOffsetX, player.y - 3 + eyeOffsetY, 3, 0, Math.PI * 2);
+            ctx.arc(player.x + 5 + eyeOffsetX, player.y - 3 + eyeOffsetY, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function gameLoop() {
+            update();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start game loop upon page load
+        window.onload = function() {
+            gameLoop();
+        };
+    </script>
 </body>
 </html>
