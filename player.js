@@ -1,3 +1,5 @@
+// player.js - Mapeamento Ajustado para a Matriz 6x6 do John
+
 const playerImg = new Image();
 playerImg.src = "imagens/JohnPersonagem1.png";
 
@@ -5,15 +7,15 @@ let playerSpriteData = {
     loaded: false,
     frameWidth: 0,
     frameHeight: 0,
-    cols: 5, // 5 colunas na imagem
-    rows: 6  // 6 linhas na imagem
+    cols: 6, // 6 colunas
+    rows: 6  // 6 linhas
 };
 
 playerImg.onload = () => {
     playerSpriteData.loaded = true;
     playerSpriteData.frameWidth = playerImg.width / playerSpriteData.cols;
     playerSpriteData.frameHeight = playerImg.height / playerSpriteData.rows;
-    console.log(`Sprite 6x6 carregado com sucesso! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
+    console.log(`Sprite carregado! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
 };
 
 // Fallback visual caso demore
@@ -34,28 +36,28 @@ function drawPlayer(ctx, player) {
     let row = 0;
     let flip = false;
 
-    // Animação de passos alternando entre os quadros da linha (de 0 a 5)
+    // Animação de passos alternando entre os 6 quadros da linha
     let animFrame = 0;
     if (player.isMoving) {
-        animFrame = Math.floor(Date.now() / 130) % 6; 
+        animFrame = Math.floor(Date.now() / 120) % 6; 
     }
 
-    // Mapeamento exato das linhas da matriz 6x6 para cada direção:
+    // Mapeamento das linhas da matriz 6x6:
     switch (player.dir) {
         case 'down':  
-            row = 0; // Primeira linha (Frente)
+            row = 0; // 1ª linha (Frente)
             col = animFrame; 
             break;
         case 'up':    
-            row = 1; // Segunda linha (Costas / Cima)
+            row = 1; // 2ª linha (Costas / Cima)
             col = animFrame; 
             break;
         case 'right': 
-            row = 2; // Terceira linha (Lateral direita)
+            row = 2; // 3ª linha (Lateral direita)
             col = animFrame; 
             break;
         case 'left':  
-            row = 2; // Usa a linha lateral direita, mas espelhamos para a esquerda
+            row = 2; // Usa a linha lateral direita e espelha para a esquerda
             col = animFrame; 
             flip = true;
             break;
@@ -70,7 +72,7 @@ function drawPlayer(ctx, player) {
     ctx.save();
 
     if (flip) {
-        // Espelha o sprite horizontalmente para o movimento à esquerda
+        // Espelha horizontalmente para o movimento à esquerda
         ctx.translate(player.x + (playerSpriteData.frameWidth / 2), 0);
         ctx.scale(-1, 1);
         ctx.drawImage(
