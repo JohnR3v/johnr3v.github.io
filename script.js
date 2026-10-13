@@ -259,8 +259,9 @@ function renderOutdoor() {
         ctx.drawImage(houseImage, houseX, houseY, houseWidth, houseHeight);
     }
 
+    // 3. Desenha a Porta da Casa
     let doorX = houseX + 70; // Porta centralizada na casa
-    let doorY = houseY + 70;
+    let doorY = houseY + 90;
     let doorWidth = 55;
     let doorHeight = 65;
 
