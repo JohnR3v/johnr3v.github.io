@@ -53,12 +53,12 @@ switch (player.dir) {
             break;
         case 'left':  
             row = 2; 
-            // Se estiver a andar, alterna entre 0 e 1. Se estiver parado, trava na coluna 1 (ou 0)
+            // Se estiver a andar, alterna entre 0 e 1. Se estiver parado, trava na coluna 0
             col = player.isMoving ? (animFrame % 2) : 0; 
             break;
         case 'right': 
             row = 2; 
-            // Se estiver a andar, alterna entre 2 e 3. Se estiver parado, trava exatamente na coluna 3 (a 4ª posição)
+            // Se estiver a andar, alterna entre 2 e 3. Se estiver parado, trava exatamente na coluna 3
             col = player.isMoving ? (2 + (animFrame % 2)) : 3; 
             break;
     }

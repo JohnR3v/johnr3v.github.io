@@ -137,8 +137,8 @@ function update() {
         camera.y = player.y - camera.height / 2;
 
         // Trava a câmera nos limites do mundo
-        camera.x = Math.max(0, Math.min(worldWidth - camera.width, camera.x));
-        camera.y = Math.max(0, Math.min(worldHeight - camera.height, camera.y));
+        camera.x = Math.max(0, Math.min(camera.x, worldWidth - canvas.width));
+        camera.y = Math.max(0, Math.min(camera.y, worldHeight - canvas.height));
     } else {
         camera.x = 0;
         camera.y = 0;
