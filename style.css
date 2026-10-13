@@ -47,16 +47,17 @@ canvas {
 
 #hud {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 10px;
+    left: 10px;
     background: rgba(10, 15, 25, 0.85);
-    padding: 10px 15px;
+    padding: 6px 10px;
     border: 1px solid #00ffcc;
-    font-size: 13px;
+    font-size: 11px;
+    max-width: 200px;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
     box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
 }
 
@@ -190,11 +191,4 @@ canvas {
     width: 65px;
     height: 65px;
     font-size: 22px;
-}
-/* Exemplo para enxugar o informativo da esquerda */
-.info-box, .hud-panel {
-    padding: 8px 12px;       /* Reduz o espaço interno */
-    font-size: 12px;         /* Deixa a letra um pouco mais compacta */
-    max-width: 220px;        /* Limita a largura para ficar discreto */
-    border-radius: 4px;
 }
