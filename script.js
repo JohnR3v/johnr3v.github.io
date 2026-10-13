@@ -26,6 +26,7 @@ let camera = {
 // Cenas: 'outdoor' ou 'indoor_desafios'
 let currentScene = 'outdoor';
 
+let keys = {};
 
 // Desafios Hacker
 const challenges = [
