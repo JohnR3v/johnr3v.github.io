@@ -42,27 +42,25 @@ function drawPlayer(ctx, player) {
         animFrame = Math.floor(Date.now() / 140);
     }
 
-    // Mapeamento preciso para a grade 4x3
-    switch (player.dir) {
+switch (player.dir) {
         case 'down':  
-            row = 0; // Linha superior (Frente)
-            col = animFrame % 4; // Usa as 4 colunas
+            row = 0; 
+            col = player.isMoving ? (animFrame % 4) : 0; // Posição padrão quando parado na frente
             break;
         case 'up':    
-            row = 1; // Linha do meio (Costas)
-            col = animFrame % 4; // Usa as 4 colunas
+            row = 1; 
+            col = player.isMoving ? (animFrame % 4) : 0; // Posição padrão quando parado nas costas
             break;
         case 'left':  
-            row = 2; // Linha inferior (Lados)
-            col = animFrame % 2; // Usa as 2 primeiras colunas para a esquerda
+            row = 2; 
+            // Se estiver a andar, alterna entre 0 e 1. Se estiver parado, trava na coluna 1 (ou 0)
+            col = player.isMoving ? (animFrame % 2) : 1; 
             break;
         case 'right': 
-            row = 2; // Linha inferior (Lados)
-            col = 2 + (animFrame % 2); // Usa as 2 últimas colunas (2 e 3) para a direita
+            row = 2; 
+            // Se estiver a andar, alterna entre 2 e 3. Se estiver parado, trava exatamente na coluna 3 (a 4ª posição)
+            col = player.isMoving ? (2 + (animFrame % 2)) : 3; 
             break;
-        default:
-            row = 0;
-            col = 0;
     }
 
     let srcX = col * playerSpriteData.frameWidth;
