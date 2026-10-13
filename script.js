@@ -147,8 +147,8 @@ function update() {
         // Checar saída na porta inferior
         if (player.x > 360 && player.x < 440 && player.y >= 530) {
             currentScene = 'outdoor';
-            player.x = 600; // Retorna na frente da casa externa
-            player.y = 550;
+            player.x = 430; // Retorna na frente da casa externa
+            player.y = 510;
             document.getElementById("location-text").innerText = "Local: Campo Externo";
             document.getElementById("objective-text").innerText = "Objetivo: Explore o mapa e encontre a Casa de Desafios";
         }
@@ -259,8 +259,8 @@ function renderOutdoor() {
         ctx.drawImage(houseImage, houseX, houseY, houseWidth, houseHeight);
     }
 
-    let doorX = houseX + 45; // Porta centralizada na casa
-    let doorY = 530;
+    let doorX = houseX + 10; // Porta centralizada na casa
+    let doorY = houseY + 30;
     let doorWidth = 55;
     let doorHeight = 65;
 
