@@ -1,8 +1,7 @@
-// player.js - Mapeamento para a Folha Clássica 4x3 do John
+// player.js - Mapeamento exato para a folha de sprites 4x3 do John
 
 const playerImg = new Image();
-// Certifique-se de salvar o arquivo com este nome exato na pasta imagens:
-playerImg.src = "imagens/JohnPersonagem.png"; 
+playerImg.src = "imagens/JohnPersonagem.png"; // Caminho exato da nova imagem limpa
 
 let playerSpriteData = {
     loaded: false,
@@ -16,7 +15,7 @@ playerImg.onload = () => {
     playerSpriteData.loaded = true;
     playerSpriteData.frameWidth = playerImg.width / playerSpriteData.cols;
     playerSpriteData.frameHeight = playerImg.height / playerSpriteData.rows;
-    console.log(`Sprite 4x3 carregado com sucesso! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
+    console.log(`Sprite 4x3 carregado! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
 };
 
 // Fallback visual caso demore um instante
@@ -37,30 +36,29 @@ function drawPlayer(ctx, player) {
     let row = 0;
     let flip = false;
 
-    // Animação de passos alternando entre os quadros da linha (0 a 3)
+    // Animação de passos (alterna entre 0 e 3 para frente/costas, ou 0 e 1 para os lados)
     let animFrame = 0;
     if (player.isMoving) {
-        animFrame = Math.floor(Date.now() / 140) % 4; 
+        animFrame = Math.floor(Date.now() / 140);
     }
 
-    // Mapeamento limpo para a grade 4x3:
+    // Mapeamento preciso para a grade 4x3
     switch (player.dir) {
         case 'down':  
-            row = 0; // 1ª Linha: Frente
-            col = animFrame; 
+            row = 0; // Linha superior (Frente)
+            col = animFrame % 4; // Usa as 4 colunas
             break;
         case 'up':    
-            row = 1; // 2ª Linha: Costas
-            col = animFrame; 
-            break;
-        case 'right': 
-            row = 2; // 3ª Linha: Lados
-            col = animFrame; 
+            row = 1; // Linha do meio (Costas)
+            col = animFrame % 4; // Usa as 4 colunas
             break;
         case 'left':  
-            row = 2; // 3ª Linha: Lados (Espelhado para a esquerda)
-            col = animFrame; 
-            flip = true;
+            row = 2; // Linha inferior (Lados)
+            col = animFrame % 2; // Usa as 2 primeiras colunas para a esquerda
+            break;
+        case 'right': 
+            row = 2; // Linha inferior (Lados)
+            col = 2 + (animFrame % 2); // Usa as 2 últimas colunas (2 e 3) para a direita
             break;
         default:
             row = 0;
@@ -72,23 +70,12 @@ function drawPlayer(ctx, player) {
 
     ctx.save();
 
-    if (flip) {
-        // Espelha horizontalmente para o movimento à esquerda
-        ctx.translate(player.x + (playerSpriteData.frameWidth / 2), 0);
-        ctx.scale(-1, 1);
-        ctx.drawImage(
-            playerImg,
-            srcX, srcY, playerSpriteData.frameWidth, playerSpriteData.frameHeight,
-            0, player.y - 32, 48, 64
-        );
-    } else {
-        // Desenho padrão centralizado
-        ctx.drawImage(
-            playerImg,
-            srcX, srcY, playerSpriteData.frameWidth, playerSpriteData.frameHeight,
-            player.x - 24, player.y - 32, 48, 64
-        );
-    }
+    // Desenho padrão centralizado (tamanho 48x64 no canvas)
+    ctx.drawImage(
+        playerImg,
+        srcX, srcY, playerSpriteData.frameWidth, playerSpriteData.frameHeight,
+        player.x - 24, player.y - 32, 48, 64
+    );
 
     ctx.restore();
 }
