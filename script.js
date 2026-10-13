@@ -9,8 +9,8 @@ const worldHeight = 1200;
 
 // Estado do Jogador (John) - Começa no centro do mundo
 let player = {
-    x: 800,
-    y: 600,
+    x: 750,
+    y: 650,
     speed: 4,
     dir: 'down',
     isMoving: false
@@ -147,8 +147,11 @@ function update() {
         // Checar saída na porta inferior
         if (player.x > 360 && player.x < 440 && player.y >= 530) {
             currentScene = 'outdoor';
-            player.x = 430; // Retorna na frente da casa externa
-            player.y = 510;
+
+            let houseX = 680;
+            let houseY = 450;
+            player.x = houseX + 95; // Retorna na frente da casa externa
+            player.y = houseY + 170;
             document.getElementById("location-text").innerText = "Local: Campo Externo";
             document.getElementById("objective-text").innerText = "Objetivo: Explore o mapa e encontre a Casa de Desafios";
         }
@@ -260,8 +263,8 @@ function renderOutdoor() {
     }
 
     // 3. Desenha a Porta da Casa
-    let doorX = houseX + 70; // Porta centralizada na casa
-    let doorY = houseY + 90;
+    let doorX = houseX + 70;
+    let doorY = houseY + 96;
     let doorWidth = 55;
     let doorHeight = 65;
 
