@@ -1,7 +1,7 @@
 // player.js - Mapeamento Ajustado para a Matriz 5x6 do John
 
 const playerImg = new Image();
-playerImg.src = "imagens/JohnPersonagem1.png";
+playerImg.src = "imagens/JohnPersonagemS.png";
 
 let playerSpriteData = {
     loaded: false,
