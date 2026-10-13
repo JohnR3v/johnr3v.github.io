@@ -42,9 +42,9 @@ function imageLoaded() {
 }
 
 const bgImage = new Image();
-bgImage.src = "imagens/chaosite.jpeg";
+bgImage.src = "imagens/chaosite.png";
 bgImage.onload = imageLoaded;
-bgImage.onerror = () => console.error("Erro ao carregar imagens/chaosite.jpeg");
+bgImage.onerror = () => console.error("Erro ao carregar imagens/chaosite.png");
 
 const houseImage = new Image();
 houseImage.src = "imagens/casahacker.png";
@@ -255,7 +255,7 @@ function render() {
 }
 
 function renderOutdoor() {
-    // 1. Desenha o Fundo Tecnológico (chaosite.jpeg) cobrindo todo o mundo
+    // 1. Desenha o Fundo Tecnológico (chaosite.png) cobrindo todo o mundo
     if (bgImage.complete) {
         ctx.drawImage(bgImage, 0, 0, worldWidth, worldHeight);
     } else {
