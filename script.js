@@ -132,7 +132,7 @@ function update() {
         player.y = Math.max(40, Math.min(worldHeight - 40, player.y));
 
         // Checar entrada na casa "Desafios" (Posicionada em X: 900-1180, Y: 450-650)
-        if (player.x > 950 && player.x < 1030 && player.y > 550 && player.y < 620) {
+        if (player.x > 950 && player.x < 1050 && player.y > 550 && player.y < 630) {
             currentScene = 'indoor_desafios';
             player.x = 400; // Posição interna da porta
             player.y = 500;
@@ -250,10 +250,31 @@ function renderOutdoor() {
         ctx.fillRect(0, 0, worldWidth, worldHeight);
     }
 
-    // 2. Desenha a Casa de Desafios (casahacker.png) na posição correta
+    let houseX = 900;
+    let houseY = 450;
+    let houseWidth = 280;
+    let houseHeight = 200;
+
     if (houseImage.complete) {
-        ctx.drawImage(houseImage, 1050, 630, 300, 250);
+        ctx.drawImage(houseImage, houseX, houseY, houseWidth, houseHeight);
     }
+
+    let doorX = 990;
+    let doorY = 570;
+    let doorWidth = 70;
+    let doorHeight = 60;
+
+    // Desenha um brilho/contorno neon pulsante ou fixo na porta para ela não ficar invisível
+    ctx.strokeStyle = "#00ffcc";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(doorX, doorY, doorWidth, doorHeight);
+
+    // Pequeno texto ou seta indicando a entrada
+    ctx.fillStyle = "#00ffcc";
+    ctx.font = "bold 10px 'Courier New'";
+    ctx.textAlign = "center";
+    ctx.fillText("▲ ENTRADA ▲", doorX + (doorWidth / 2), doorY - 8);
+    ctx.textAlign = "left";
 }
 
 function renderIndoorDesafios() {
