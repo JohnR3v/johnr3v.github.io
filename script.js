@@ -47,9 +47,9 @@ bgImage.onload = imageLoaded;
 bgImage.onerror = () => console.error("Erro ao carregar imagens/chaosite.jpeg");
 
 const houseImage = new Image();
-houseImage.src = "imagens/casahacker.jpg";
+houseImage.src = "imagens/casahacker.png";
 houseImage.onload = imageLoaded;
-houseImage.onerror = () => console.error("Erro ao carregar imagens/casahacker.jpg");
+houseImage.onerror = () => console.error("Erro ao carregar imagens/casahacker.png");
 // -------------------------------------
 
 // Desafios Hacker
@@ -250,7 +250,7 @@ function renderOutdoor() {
         ctx.fillRect(0, 0, worldWidth, worldHeight);
     }
 
-    // 2. Desenha a Casa de Desafios (casahacker.jpg) na posição correta
+    // 2. Desenha a Casa de Desafios (casahacker.png) na posição correta
     if (houseImage.complete) {
         ctx.drawImage(houseImage, 930, 480, 200, 140);
     }
