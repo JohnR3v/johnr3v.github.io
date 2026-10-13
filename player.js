@@ -54,7 +54,7 @@ switch (player.dir) {
         case 'left':  
             row = 2; 
             // Se estiver a andar, alterna entre 0 e 1. Se estiver parado, trava na coluna 1 (ou 0)
-            col = player.isMoving ? (animFrame % 2) : 1; 
+            col = player.isMoving ? (animFrame % 2) : 0; 
             break;
         case 'right': 
             row = 2; 
