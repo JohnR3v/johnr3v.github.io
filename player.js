@@ -1,6 +1,6 @@
 // player.js - Gerenciamento Seguro do Sprite do John
 const playerImg = new Image();
-playerImg.src = "imagens/JohnPersonagem.jpeg";
+playerImg.src = "imagens/JohnPersonagem.png";
 
 let playerSpriteData = {
     loaded: false,
