@@ -237,20 +237,8 @@ function renderIndoorDesafios() {
 }
 
 function renderPlayer() {
-    // Sombra do Jogador
-    ctx.fillStyle = "rgba(0,0,0,0.4)";
-    ctx.beginPath();
-    ctx.arc(player.x, player.y + 12, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Avatar do John (Hacker cyberpunk minimalista)
-    ctx.fillStyle = "#00ffcc";
-    ctx.fillRect(player.x - 8, player.y - 12, 16, 20); // Corpo
-
-    ctx.fillStyle = "#ffb703";
-    ctx.beginPath();
-    ctx.arc(player.x, player.y - 16, 8, 0, Math.PI * 2); // Cabeça / Capuz
-    ctx.fill();
+    // Chama o renderizador modular do sprite do John
+    drawPlayer(ctx, player);
 }
 
 // Loop Principal do Jogo
