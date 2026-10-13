@@ -134,8 +134,8 @@ function update() {
         // Checar entrada na casa "Desafios" (Posicionada em X: 900-1180, Y: 450-650)
         if (player.x > 710 && player.x < 790 && player.y > 520 && player.y < 600) {
             currentScene = 'indoor_desafios';
-            player.x = 400; // Posição interna da porta
-            player.y = 500;
+            player.x = 420; // Posição interna da porta
+            player.y = 510;
             document.getElementById("location-text").innerText = "Local: Casa - Desafios";
             document.getElementById("objective-text").innerText = "Objetivo: Acesse os terminais de hacking";
         }
@@ -147,8 +147,8 @@ function update() {
         // Checar saída na porta inferior
         if (player.x > 360 && player.x < 440 && player.y >= 530) {
             currentScene = 'outdoor';
-            player.x = 990; // Retorna na frente da casa externa
-            player.y = 640;
+            player.x = 600; // Retorna na frente da casa externa
+            player.y = 550;
             document.getElementById("location-text").innerText = "Local: Campo Externo";
             document.getElementById("objective-text").innerText = "Objetivo: Explore o mapa e encontre a Casa de Desafios";
         }
