@@ -28,7 +28,6 @@ let currentScene = 'outdoor';
 
 // Controles
 let keys = {};
-let touchInput = { up: false, down: false, left: false, right: false, action: false };
 
 // Desafios Hacker
 const challenges = [
