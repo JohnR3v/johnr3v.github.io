@@ -1,6 +1,6 @@
-// player.js - Gerenciamento do Sprite do John
+// player.js - Gerenciamento Seguro do Sprite do John
 const playerImg = new Image();
-playerImg.src = "Imagens/johnPersonagem.jpeg";
+playerImg.src = "imagens/johnPersonagem.jpeg"; // Certifique-se se a pasta no git é 'imagens' minúsculo
 
 let playerSpriteData = {
     loaded: false,
@@ -15,14 +15,14 @@ playerImg.onload = () => {
     console.log("Sprite do John carregado com sucesso!");
 };
 
-// Se houver qualquer falha no carregamento, o jogo não quebra
+// Se falhar, avisa no console mas o jogo continua rodando normal com o boneco geométrico
 playerImg.onerror = () => {
-    console.warn("Aviso: Não foi possível carregar a imagem do John. Usando fallback visual.");
+    console.warn("Aviso: Imagem não encontrada. Usando modo de fallback.");
 };
 
 function drawPlayer(ctx, player) {
-    // Se a imagem ainda não carregou ou falhou, desenha o avatar geométrico provisório para o jogo não sumir
-    if (!playerSpriteData.loaded || playerImg.complete === false) {
+    // Se a imagem não carregou, desenha o avatar em formas geométricas para o jogo nunca travar a tela
+    if (!playerSpriteData.loaded) {
         ctx.fillStyle = "#ffb703";
         ctx.beginPath();
         ctx.arc(player.x, player.y - 16, 8, 0, Math.PI * 2);
@@ -32,9 +32,9 @@ function drawPlayer(ctx, player) {
         return;
     }
 
-    // Mapeamento das linhas do Spritesheet
-    let row = 0; // Frente (down)
+    let row = 0; // Frente
     if (player.dir === 'up') row = 1;
+    else if (player.dir === 'down') row = 2;
     else if (player.dir === 'left' || player.dir === 'right') row = 2;
 
     let col = 0;
