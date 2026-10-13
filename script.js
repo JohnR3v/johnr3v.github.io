@@ -252,7 +252,7 @@ function renderOutdoor() {
 
     // 2. Desenha a Casa de Desafios (casahacker.jpeg) na posição correta
     if (houseImage.complete) {
-        ctx.drawImage(houseImage, 900, 450, 280, 200);
+        ctx.drawImage(houseImage, 930, 480, 200, 140);
     }
 }
 
