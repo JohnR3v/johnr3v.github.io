@@ -279,6 +279,7 @@ function renderOutdoor() {
     let doorHeight = 65;
 
     // Desenha um brilho/contorno neon pulsante ou fixo na porta para ela não ficar invisível
+    /*
     ctx.strokeStyle = "#00ffcc";
     ctx.lineWidth = 3;
     ctx.strokeRect(doorX, doorY, doorWidth, doorHeight);
@@ -289,6 +290,7 @@ function renderOutdoor() {
     ctx.textAlign = "center";
     ctx.fillText("▲ ENTRADA ▲", doorX + (doorWidth / 2), doorY - 8);
     ctx.textAlign = "left";
+    */
 }
 
 function renderIndoorDesafios() {
