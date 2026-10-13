@@ -3,108 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>johnr3v.dev | Cybersecurity & Tech Portfolio</title>
+    <title>johnr3v.dev | Cyber SOC Mini-Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --accent-color: #00ff66;
-            --text-color: #f3f4f6;
-            --text-muted: #9ca3af;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #030712;
+            color: #22c55e;
+            overflow-x: hidden;
         }
-        .container {
-            max-width: 800px;
-            width: 90%;
-            background: var(--card-bg);
-            border: 1px solid #1f2937;
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.05);
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
         }
-        header h1 {
-            color: var(--accent-color);
-            font-size: 2rem;
-            margin-bottom: 5px;
+        .neon-border {
+            border: 1px solid rgba(34, 197, 94, 0.4);
         }
-        header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin-top: 0;
-        }
-        .section {
-            margin-top: 30px;
-        }
-        .section h2 {
-            font-size: 1.2rem;
-            border-bottom: 1px solid #374151;
-            padding-bottom: 8px;
-            color: #60a5fa;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            margin: 10px 0;
-        }
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        a:hover {
-            text-decoration: underline;
-            color: #34d399;
-        }
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        canvas {
+            image-rendering: pixelated;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>&gt; johnr3v.dev_</h1>
-            <p>Cybersecurity Analyst | System Analysis & Development Student</p>
-        </header>
+<body class="min-h-screen flex flex-col items-center justify-between p-4">
 
-        <div class="section">
-            <h2>// Sobre Mim</h2>
-            <p>Focado em segurança defensiva, análise de vulnerabilidades (OWASP Top 10), automação com Python e compartilhamento de conhecimento técnico através de projetos e conteúdo digital.</p>
+    <header class="w-full max-w-4xl flex flex-col sm:flex-row justify-between items-center bg-gray-900/80 p-4 rounded-xl neon-border neon-glow mb-4">
+        <div>
+            <h1 class="text-xl font-bold text-emerald-400 tracking-wider">&gt; johnr3v.dev // SOC_SIMULATOR_v1.0</h1>
+            <p class="text-xs text-gray-400">Explore the server room, hack terminals, and solve cyber challenges.</p>
+        </div>
+        <div class="flex gap-4 mt-3 sm:mt-0 text-sm">
+            <div class="bg-black/60 px-3 py-1 rounded border border-emerald-500/30">
+                REPUTAÇÃO: <span id="score" class="text-emerald-400 font-bold">0</span> XP
+            </div>
+            <div class="bg-black/60 px-3 py-1 rounded border border-emerald-500/30">
+                TERMINAIS HACKEADOS: <span id="terminals-count" class="text-emerald-400 font-bold">0/4</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-4xl relative flex flex-col items-center">
+        <div id="game-container" class="relative w-full rounded-xl overflow-hidden neon-border bg-gray-950 shadow-2xl flex justify-center">
+            <canvas id="gameCanvas" class="w-full max-w-[800px] h-[450px] bg-slate-950 block"></canvas>
+            
+            <!-- Interaction Prompt Overlay -->
+            <div id="interact-prompt" class="absolute bottom-6 bg-black/80 border border-emerald-500 text-emerald-400 px-4 py-2 rounded-lg text-sm hidden animate-pulse">
+                [Pressione 'E' ou Toque] para acessar o Terminal
+            </div>
         </div>
 
-        <div class="section">
-            <h2>// Projetos & Conteúdos</h2>
-            <ul>
-                <li>🛡️ <strong>Bad Guys da Cyber:</strong> Iniciativa de educação e conscientização em cibersegurança.</li>
-                <li>💻 <strong>GitHub Repositories:</strong> Códigos de automação, scripts de segurança e estudos de malware (MITRE ATT&CK).</li>
-            </ul>
+        <div class="w-full max-w-4xl flex justify-between items-center mt-4 px-2">
+            <div class="text-xs text-gray-500">
+                CONTROLES: <span class="text-emerald-400">W, A, S, D</span> ou Setas para mover. <span class="text-emerald-400">E</span> para interagir.
+            </div>
+            <div class="flex gap-2 sm:hidden">
+                <button id="btn-up" class="bg-gray-800 border border-emerald-500 px-4 py-2 rounded text-emerald-400 active:bg-emerald-900">↑</button>
+            </div>
         </div>
+    </main>
 
-        <div class="section">
-            <h2>// Links Oficiais</h2>
-            <ul>
-                <li>GitHub: <a href="https://github.com/johnr3v" target="_blank">github.com/johnr3v</a></li>
-            </ul>
+    <div id="terminal-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-900 border-2 border-emerald-500 rounded-xl max-w-lg w-full p-6 neon-glow relative">
+            <div class="flex justify-between items-center border-b border-emerald-500/30 pb-3 mb-4">
+                <h3 id="modal-title" class="text-emerald-400 font-bold text-lg">TERMINAL SECRETO #01</h3>
+                <button onclick="closeTerminal()" class="text-gray-400 hover:text-red-400 font-bold">[X]</button>
+            </div>
+            <div id="modal-content" class="text-sm text-gray-300 space-y-3 mb-6">
+                <!-- Challenge content injected dynamically -->
+            </div>
+            <div id="modal-options" class="flex flex-col gap-2">
+                <!-- Options injected dynamically -->
+            </div>
         </div>
-
-        <footer>
-            <p>&copy; 2026 johnr3v.dev. All rights reserved.</p>
-        </footer>
     </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Fixed internal rendering resolution
+        canvas.width = 800;
+        canvas.height = 450;
+
+        let score = 0;
+        let hackedCount = 0;
+        let activeTerminal = null;
+
+        // Player state
+        const player = {
+            x: 100,
+            y: 225,
+            size: 20,
+            speed: 3.5,
+            color: '#22c55e'
+        };
+
+        // Obstacles (Server Racks & Desks)
+        const obstacles = [
+            { x: 150, y: 80, width: 100, height: 60, name: 'Server Rack A' },
+            { x: 150, y: 310, width: 100, height: 60, name: 'Server Rack B' },
+            { x: 450, y: 80, width: 120, height: 60, name: 'Core Firewall' },
+            { x: 450, y: 310, width: 120, height: 60, name: 'Database Mainframe' }
+        ];
+
+        // Terminals with Cyber Challenges
+        const terminals = [
+            {
+                id: 1,
+                x: 195,
+                y: 165,
+                radius: 25,
+                name: 'Terminal Web SOC',
+                solved: false,
+                title: 'Desafio de SQL Injection',
+                content: 'Um atacante enviou a seguinte query num campo de login: <code>admin\' OR \'1\'=\'1</code>. Como essa vulnerabilidade manipula a lógica?',
+                options: [
+                    { text: 'A) Altera a senha do banco de dados.', correct: false },
+                    { text: 'B) Faz a condição da query retornar sempre verdadeira, bypassando a autenticação.', correct: true },
+                    { text: 'C) Executa comandos remotos no sistema operacional.', correct: false }
+                ]
+            },
+            {
+                id: 2,
+                x: 195,
+                y: 295,
+                radius: 25,
+                name: 'Terminal Firewall',
+                solved: false,
+                title: 'Análise de Logs de Rede',
+                content: 'Você notou múltiplos pacotes SYN com IPs falsificados inundando a porta 80. Qual o nome deste ataque?',
+                options: [
+                    { text: 'A) SYN Flood (DDoS)', correct: true },
+                    { text: 'B) Phishing Corporativo', correct: false },
+                    { text: 'C) Man-in-the-Middle', correct: false }
+                ]
+            },
+            {
+                id: 3,
+                x: 510,
+                y: 165,
+                radius: 25,
+                name: 'Terminal Core',
+                solved: false,
+                title: 'Segurança Defensiva & MITRE',
+                content: 'Qual framework da MITRE é amplamente utilizado para mapear táticas e técnicas de adversários baseadas em incidentes reais?',
+                options: [
+                    { text: 'A) OWASP Top 10', correct: false },
+                    { text: 'B) MITRE ATT&CK', correct: true },
+                    { text: 'C) ISO 27001', correct: false }
+                ]
+            },
+            {
+                id: 4,
+                x: 510,
+                y: 295,
+                radius: 25,
+                name: 'Terminal Mainframe',
+                solved: false,
+                title: 'Criptografia Básica',
+                content: 'Qual algoritmo abaixo é considerado obsoleto e altamente inseguro para armazenamento de senhas devido a colisões e falta de salt?',
+                options: [
+                    { text: 'A) Argon2', correct: false },
+                    { text: 'B) Bcrypt', correct: false },
+                    { text: 'C) MD5 puro', correct: true }
+                ]
+            }
+        ];
+
+        // Input handling
+        const keys = {};
+        window.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.key.toLowerCase() === 'e') {
+                checkTerminalInteraction();
+            }
+        });
+        window.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
+
+        // Collision detection box vs circle
+        function checkCollision(nx, ny) {
+            // Wall boundaries
+            if (nx < 30 || nx > canvas.width - 30 || ny < 30 || ny > canvas.height - 30) {
+                return true;
+            }
+            // Obstacles collision
+            for (let obs of obstacles) {
+                if (
+                    nx + player.size / 2 > obs.x &&
+                    nx - player.size / 2 < obs.x + obs.width &&
+                    ny + player.size / 2 > obs.y &&
+                    ny - player.size / 2 < obs.y + obs.height
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function update() {
+            if (activeTerminal) return; // Freeze game when modal is open
+
+            let dx = 0;
+            let dy = 0;
+
+            if (keys['w'] || keys['arrowup']) dy -= player.speed;
+            if (keys['s'] || keys['arrowdown']) dy += player.speed;
+            if (keys['a'] || keys['arrowleft']) dx -= player.speed;
+            if (keys['d'] || keys['arrowright']) dx += player.speed;
+
+            if (dx !== 0 && dy !== 0) {
+                dx *= 0.7071;
+                dy *= 0.7071;
+            }
+
+            if (!checkCollision(player.x + dx, player.y)) {
+                player.x += dx;
+            }
+            if (!checkCollision(player.x, player.y + dy)) {
+                player.y += dy;
+            }
+
+            // Check proximity to terminals
+            let nearAny = false;
+            for (let t of terminals) {
+                let dist = Math.hypot(player.x - t.x, player.y - t.y);
+                if (dist < 45 && !t.solved) {
+                    nearAny = true;
+                    break;
+                }
+            }
+
+            const prompt = document.getElementById('interact-prompt');
+            if (nearAny) {
+                prompt.classList.remove('hidden');
+            } else {
+                prompt.classList.add('hidden');
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Cyber Grid Background
+            ctx.strokeStyle = '#061a12';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            // Draw Server Racks / Obstacles
+            for (let obs of obstacles) {
+                ctx.fillStyle = '#0f172a';
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 2;
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
+
+                // LED lights on server
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(obs.x + 10, obs.y + 10, 6, 6);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(obs.x + 22, obs.y + 10, 6, 6);
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '10px monospace';
+                ctx.fillText(obs.name, obs.x + 10, obs.y + obs.height - 10);
+            }
+
+            // Draw Terminals
+            for (let t of terminals) {
+                ctx.beginPath();
+                ctx.arc(t.x, t.y, t.radius, 0, Math.PI * 2);
+                ctx.fillStyle = t.solved ? '#065f46' : '#1e293b';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = t.solved ? '#10b981' : '#00ff66';
+                ctx.stroke();
+
+                // Terminal icon / text
+                ctx.fillStyle = t.solved ? '#34d399' : '#00ff66';
+                ctx.font = '12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(t.solved ? '✓' : '💻', t.x, t.y + 4);
+            }
+
+            // Draw Player (Hacker Avatar)
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+            ctx.fillStyle = '#22c55e';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+
+            // Player visor glow
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(player.x - 6, player.y - 4, 12, 6);
+        }
+
+        function checkTerminalInteraction() {
+            if (activeTerminal) return;
+
+            for (let t of terminals) {
+                let dist = Math.hypot(player.x - t.x, player.y - t.y);
+                if (dist < 45 && !t.solved) {
+                    openTerminal(t);
+                    break;
+                }
+            }
+        }
+
+        function openTerminal(term) {
+            activeTerminal = term;
+            document.getElementById('modal-title').innerText = term.title;
+            document.getElementById('modal-content').innerHTML = term.content;
+
+            const optionsContainer = document.getElementById('modal-options');
+            optionsContainer.innerHTML = '';
+
+            term.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left bg-black/60 hover:bg-emerald-950/60 border border-emerald-500/40 p-3 rounded text-sm text-emerald-300 transition';
+                btn.innerText = opt.text;
+                btn.onclick = () => handleAnswer(term, opt.correct);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('terminal-modal').classList.remove('hidden');
+        }
+
+        function handleAnswer(term, isCorrect) {
+            if (isCorrect) {
+                term.solved = true;
+                score += 250;
+                hackedCount += 1;
+                document.getElementById('score').innerText = score;
+                document.getElementById('terminals-count').innerText = `${hackedCount}/4`;
+                
+                alertBox('Sucesso!', 'Desafio resolvido com sucesso! +250 XP de reputação hacker.');
+            } else {
+                alertBox('Falha!', 'Resposta incorreta. O IDS/IPS bloqueou sua tentativa. Tente novamente!');
+            }
+            closeTerminal();
+        }
+
+        function closeTerminal() {
+            document.getElementById('terminal-modal').classList.add('hidden');
+            activeTerminal = null;
+        }
+
+        function alertBox(title, msg) {
+            // Custom non-blocking notification banner in console/ui
+            console.log(`[${title}] ${msg}`);
+        }
+
+        // Main Loop
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.onload = function() {
+            gameLoop();
+        };
+    </script>
 </body>
 </html>
