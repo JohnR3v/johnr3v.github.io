@@ -1,76 +1,94 @@
-// player.js - Gerenciamento e Animação Limpa do John
+// player.js - Renderização e Animação do John para a Nova Folha de Sprites
 
 const playerImg = new Image();
-playerImg.src = "imagens/JohnPersonagem1.png"; // Certifique-se de usar a imagem LIMPA
+playerImg.src = "Imagens/johnPersonagem.png"; // Certifique-se de que o nome do arquivo na pasta é este
 
 let playerSpriteData = {
     loaded: false,
-    // A nova folha limpa tem 2 colunas e 3 linhas principais
     frameWidth: 0,
-    frameHeight: 0
+    frameHeight: 0,
+    // A nova folha possui uma grade maior (ex: 6 colunas por 8 linhas no total da imagem)
+    cols: 6,
+    rows: 8
 };
 
 playerImg.onload = () => {
     playerSpriteData.loaded = true;
-    // Define o tamanho de corte exato baseado na grade 2x3
-    playerSpriteData.frameWidth = playerImg.width / 2;
-    playerSpriteData.frameHeight = playerImg.height / 3;
-    console.log("Sprite do John (Limpo) carregado. Grade: 2x3.");
+    playerSpriteData.frameWidth = playerImg.width / playerSpriteData.cols;
+    playerSpriteData.frameHeight = playerImg.height / playerSpriteData.rows;
+    console.log(`Sprite carregado! Dimensões do frame: ${playerSpriteData.frameWidth} x ${playerSpriteData.frameHeight}`);
 };
 
-// Fallback visual para garantir renderização caso a imagem demore
+// Fallback visual caso demore um instante
 function drawPlayerFallback(ctx, player) {
-    ctx.fillStyle = "#ffb703"; // Cabelo
+    ctx.fillStyle = "#ffb703";
     ctx.beginPath(); ctx.arc(player.x, player.y - 16, 8, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#00ffcc"; // Hoodie
+    ctx.fillStyle = "#00ffcc";
     ctx.fillRect(player.x - 8, player.y - 12, 16, 20);
 }
 
-// Função de renderização principal do John
 function drawPlayer(ctx, player) {
     if (!playerSpriteData.loaded) {
         drawPlayerFallback(ctx, player);
         return;
     }
 
-    // Mapeamento de direção para Linha (Row) e Coluna (Col) na grade
-    let row = 0;
+    // Mapeamento de linha (row) e coluna (col) baseada na direção e animação
     let col = 0;
-    let flipLeft = false; // Controle de espelhamento para olhar para a esquerda
+    let row = 0;
+    let flip = false; // Espelhamento para o lado esquerdo se necessário
 
-    switch (player.dir) {
-        case 'down':  row = 0; col = 0; break; // Frente (Frente/Down)
-        case 'up':    row = 0; col = 1; break; // Costas (Costas/Up)
-        case 'right': row = 1; col = 0; break; // Direita (Estático/Right)
-        case 'left':  row = 1; col = 0; flipLeft = true; break; // Esquerda (Espelha o sprite Right)
-        default:      row = 0; col = 0; // Padrão
+    // Animação de passos alternando frames (0, 1, 2...) quando o player estiver andando
+    let animFrame = 0;
+    if (player.isMoving) {
+        animFrame = Math.floor(Date.now() / 130) % 3; // Alterna a cada 130ms entre 3 frames
     }
 
-    // Calcula as coordenadas de corte na folha limpa
+    switch (player.dir) {
+        case 'down':
+            row = 0; // Linha superior (frente)
+            col = animFrame; 
+            break;
+        case 'up':
+            row = 1; // Linha de costas
+            col = animFrame;
+            break;
+        case 'right':
+            row = 2; // Linha lateral direita
+            col = animFrame;
+            break;
+        case 'left':
+            row = 2; // Usa a mesma linha lateral, mas espelhamos o desenho
+            col = animFrame;
+            flip = true;
+            break;
+        default:
+            row = 0;
+            col = 0;
+    }
+
     let srcX = col * playerSpriteData.frameWidth;
     let srcY = row * playerSpriteData.frameHeight;
 
-    ctx.save(); // Salva o estado do contexto
+    ctx.save();
 
-    // Se estiver olhando para a esquerda, espelhamos o contexto horizontalmente
-    if (flipLeft) {
-        ctx.translate(player.x + (playerSpriteData.frameWidth / 2) - 24, 0); // Ajuste fino de posição
-        ctx.scale(-1, 1); // Espelha
-        
-        // Desenha o sprite espelhado
+    if (flip) {
+        // Espelha horizontalmente para o movimento à esquerda
+        ctx.translate(player.x + (playerSpriteData.frameWidth / 2), 0);
+        ctx.scale(-1, 1);
         ctx.drawImage(
             playerImg,
             srcX, srcY, playerSpriteData.frameWidth, playerSpriteData.frameHeight,
-            0, player.y - 32, 48, 64 // Posição 0 relativa ao translate
+            0, player.y - 32, 48, 64
         );
     } else {
-        // Desenha o sprite normalmente (Frente, Costas, Direita)
+        // Desenho normal (Frente, Costas, Direita) com o tamanho correto (48x64 pixels no canvas)
         ctx.drawImage(
             playerImg,
             srcX, srcY, playerSpriteData.frameWidth, playerSpriteData.frameHeight,
-            player.x - 24, player.y - 32, 48, 64 // Centraliza e define tamanho no canvas
+            player.x - 24, player.y - 32, 48, 64
         );
     }
 
-    ctx.restore(); // Restaura o estado original (remove espelhamento)
+    ctx.restore();
 }
