@@ -1,21 +1,22 @@
-// player.js - Mapeamento Ajustado para a Matriz 5x6 do John
+// player.js - Mapeamento para a Folha Clássica 4x3 do John
 
 const playerImg = new Image();
-playerImg.src = "imagens/JohnPersonagem.png";
+// Certifique-se de salvar o arquivo com este nome exato na pasta imagens:
+playerImg.src = "imagens/JohnPersonagem.png"; 
 
 let playerSpriteData = {
     loaded: false,
     frameWidth: 0,
     frameHeight: 0,
-    cols: 5, // 5 colunas horizontais na imagem
-    rows: 6  // 6 linhas verticais na imagem
+    cols: 4, // 4 colunas horizontais
+    rows: 3  // 3 linhas verticais
 };
 
 playerImg.onload = () => {
     playerSpriteData.loaded = true;
     playerSpriteData.frameWidth = playerImg.width / playerSpriteData.cols;
     playerSpriteData.frameHeight = playerImg.height / playerSpriteData.rows;
-    console.log(`Sprite 5x6 carregado com sucesso! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
+    console.log(`Sprite 4x3 carregado com sucesso! Frame: ${playerSpriteData.frameWidth}x${playerSpriteData.frameHeight}`);
 };
 
 // Fallback visual caso demore um instante
@@ -36,28 +37,28 @@ function drawPlayer(ctx, player) {
     let row = 0;
     let flip = false;
 
-    // Animação de passos alternando entre os quadros da linha (máximo de 5 colunas)
+    // Animação de passos alternando entre os quadros da linha (0 a 3)
     let animFrame = 0;
     if (player.isMoving) {
-        animFrame = Math.floor(Date.now() / 130) % 5; 
+        animFrame = Math.floor(Date.now() / 140) % 4; 
     }
 
-    // Mapeamento correto das linhas para cada direção:
+    // Mapeamento limpo para a grade 4x3:
     switch (player.dir) {
         case 'down':  
-            row = 0; // 1ª linha (Frente)
+            row = 0; // 1ª Linha: Frente
             col = animFrame; 
             break;
         case 'up':    
-            row = 1; // 2ª linha (Costas / Cima)
+            row = 1; // 2ª Linha: Costas
             col = animFrame; 
             break;
         case 'right': 
-            row = 2; // 3ª linha (Lateral direita)
+            row = 2; // 3ª Linha: Lados
             col = animFrame; 
             break;
         case 'left':  
-            row = 2; // Usa a linha lateral direita e espelha para a esquerda
+            row = 2; // 3ª Linha: Lados (Espelhado para a esquerda)
             col = animFrame; 
             flip = true;
             break;
