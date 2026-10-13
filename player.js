@@ -1,6 +1,6 @@
 // player.js - Gerenciamento Seguro do Sprite do John
 const playerImg = new Image();
-playerImg.src = "imagens/johnPersonagem.jpeg"; // Certifique-se se a pasta no git é 'imagens' minúsculo
+playerImg.src = "imagens/JohnPersonagem.jpeg";
 
 let playerSpriteData = {
     loaded: false,
