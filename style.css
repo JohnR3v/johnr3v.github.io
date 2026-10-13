@@ -191,3 +191,10 @@ canvas {
     height: 65px;
     font-size: 22px;
 }
+/* Exemplo para enxugar o informativo da esquerda */
+.info-box, .hud-panel {
+    padding: 8px 12px;       /* Reduz o espaço interno */
+    font-size: 12px;         /* Deixa a letra um pouco mais compacta */
+    max-width: 220px;        /* Limita a largura para ficar discreto */
+    border-radius: 4px;
+}

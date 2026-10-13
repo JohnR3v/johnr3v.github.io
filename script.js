@@ -27,6 +27,14 @@ let camera = {
 let currentScene = 'outdoor';
 
 let keys = {};
+let touchInput = { up: false, down: false, left: false, right: false, action: false };
+
+// Carregamento das Imagens de Cenário
+const bgImage = new Image();
+bgImage.src = "imagens/chaosite.jpeg";
+
+const houseImage = new Image();
+houseImage.src = "imagens/casahacker.jpeg";
 
 // Desafios Hacker
 const challenges = [
@@ -117,7 +125,6 @@ function update() {
         }
     } 
     else if (currentScene === 'indoor_desafios') {
-        // Dentro da casa, mantemos o tamanho padrão da tela (800x600) sem rolagem excessiva
         player.x = Math.max(80, Math.min(canvas.width - 100, player.x));
         player.y = Math.max(120, Math.min(canvas.height - 60, player.y));
 
@@ -219,49 +226,18 @@ function render() {
 }
 
 function renderOutdoor() {
-    // Fundo do Mundo Amplo
-    ctx.fillStyle = "#050b14";
-    ctx.fillRect(0, 0, worldWidth, worldHeight);
-
-    // Grade cibernética no mundo todo
-    ctx.strokeStyle = "rgba(0, 255, 204, 0.05)";
-    ctx.lineWidth = 1;
-    for (let x = 0; x < worldWidth; x += 50) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, worldHeight); ctx.stroke();
-    }
-    for (let y = 0; y < worldHeight; y += 50) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(worldWidth, y); ctx.stroke();
+    // Desenha a imagem de fundo do mundo inteiro (chaosite.jpeg)
+    if (bgImage.complete) {
+        ctx.drawImage(bgImage, 0, 0, worldWidth, worldHeight);
+    } else {
+        ctx.fillStyle = "#050b14";
+        ctx.fillRect(0, 0, worldWidth, worldHeight);
     }
 
-    // Ruas / Trilhas no Mundo
-    ctx.fillStyle = "#0d1b2a";
-    ctx.fillRect(750, 0, 150, worldHeight); // Estrada vertical central
-
-    // Casa "Desafios" (Posicionada no mundo em X: 900, Y: 450)
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(900, 450, 260, 180);
-    ctx.strokeStyle = "#00ffcc";
-    ctx.lineWidth = 3;
-    ctx.strokeRect(900, 450, 260, 180);
-
-    // Porta da Casa
-    ctx.fillStyle = "#1e293b";
-    ctx.fillRect(990, 570, 70, 60);
-    ctx.strokeStyle = "#ff007f";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(990, 570, 70, 60);
-
-    // Letreiro da Casa
-    ctx.fillStyle = "rgba(0, 255, 204, 0.15)";
-    ctx.fillRect(920, 470, 220, 35);
-    ctx.strokeStyle = "#00ffcc";
-    ctx.strokeRect(920, 470, 220, 35);
-
-    ctx.fillStyle = "#00ffcc";
-    ctx.font = "bold 15px 'Courier New'";
-    ctx.textAlign = "center";
-    ctx.fillText("⚡ CASA DE DESAFIOS ⚡", 1030, 493);
-    ctx.textAlign = "left";
+    // Desenha a imagem da Casa de Desafios (casahacker.jpeg) no lugar do retângulo antigo
+    if (houseImage.complete) {
+        ctx.drawImage(houseImage, 900, 450, 280, 200);
+    }
 }
 
 function renderIndoorDesafios() {
@@ -311,7 +287,6 @@ function renderIndoorDesafios() {
 }
 
 function renderPlayer() {
-    // Chama o renderizador do sprite do John (definido no player.js)
     if (typeof drawPlayer === 'function') {
         drawPlayer(ctx, player);
     }
