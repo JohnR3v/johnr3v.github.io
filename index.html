@@ -3,11 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bad Guys da Cyber - Portfólio & Desafios</title>
+    <title>John Alberto | Portfólio & Desafios</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
+        <div id="start-screen" class="start-screen">
+            <div class="start-panel">
+                <p class="eyebrow">PORTFÓLIO INTERATIVO</p>
+                <h1>John Alberto</h1>
+                <p class="subtitle">Explorando tecnologia, segurança e desafios com um toque cyberpunk.</p>
+                <div class="controls-list">
+                    <span>WASD / Setas: mover</span>
+                    <span>E: interagir</span>
+                    <span>ESC: fechar desafio</span>
+                </div>
+                <button id="start-btn">Entrar no mapa</button>
+                <button id="scene-view-btn" class="secondary-btn">Abrir janela do cenário</button>
+                <button id="editor-view-btn" class="secondary-btn">Editar cenário</button>
+            </div>
+        </div>
+
         <!-- Canvas do Jogo -->
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         
@@ -15,6 +31,16 @@
         <div id="hud">
             <span id="location-text">Local: Campo Externo</span>
             <span id="objective-text">Objetivo: Entre na casa "Desafios"</span>
+            <span id="interaction-hint">Explore o mapa e encontre a porta da casa.</span>
+            <div class="health-panel">
+                <div class="health-label-row">
+                    <span>Vida</span>
+                    <span id="health-text">100 / 100</span>
+                </div>
+                <div class="health-bar">
+                    <div id="health-fill"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Modal de Desafios Hacker -->

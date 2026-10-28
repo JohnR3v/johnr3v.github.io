@@ -36,44 +36,37 @@ function drawPlayer(ctx, player) {
     let row = 0;
     let flip = false;
 
-    // Animação de passos (alterna entre 0 e 3 para frente/costas, ou 0 e 1 para os lados)
-    let animFrame = 0;
-    if (player.isMoving) {
-        animFrame = Math.floor(Date.now() / 140);
-    }
+    const animFrame = player.isMoving ? Math.floor(Date.now() / 150) : 0;
 
-switch (player.dir) {
-        case 'down':  
-            row = 0; 
-            col = player.isMoving ? (animFrame % 4) : 0; // Posição padrão quando parado na frente
+    switch (player.dir) {
+        case 'down':
+            row = 0;
+            col = player.isMoving ? (animFrame % 4) : 0;
             break;
-        case 'up':    
-            row = 1; 
-            col = player.isMoving ? (animFrame % 4) : 0; // Posição padrão quando parado nas costas
+        case 'up':
+            row = 1;
+            col = player.isMoving ? (animFrame % 4) : 0;
             break;
-        case 'left':  
-            row = 2; 
-            // Se estiver a andar, alterna entre 0 e 1. Se estiver parado, trava na coluna 0
-            col = player.isMoving ? (animFrame % 2) : 0; 
+        case 'left':
+            row = 2;
+            col = player.isMoving ? (animFrame % 2) : 0;
             break;
-        case 'right': 
-            row = 2; 
-            // Se estiver a andar, alterna entre 2 e 3. Se estiver parado, trava exatamente na coluna 3
-            col = player.isMoving ? (2 + (animFrame % 2)) : 3; 
+        case 'right':
+            row = 2;
+            col = player.isMoving ? (2 + (animFrame % 2)) : 3;
             break;
     }
 
-    let srcX = col * playerSpriteData.frameWidth;
-    let srcY = row * playerSpriteData.frameHeight;
+    const srcX = col * playerSpriteData.frameWidth;
+    const srcY = row * playerSpriteData.frameHeight;
+    const spriteSize = 48;
 
     ctx.save();
-
-    // Desenho padrão centralizado (tamanho 48x64 no canvas)
+    ctx.imageSmoothingEnabled = true;
     ctx.drawImage(
         playerImg,
         srcX, srcY, playerSpriteData.frameWidth, playerSpriteData.frameHeight,
-        player.x - 24, player.y - 32, 48, 64
+        player.x - spriteSize / 2, player.y - 40, spriteSize, 56
     );
-
     ctx.restore();
 }
